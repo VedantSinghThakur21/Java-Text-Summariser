@@ -42,4 +42,16 @@ public class ChatService {
         return vector;
     }
 
+    private double cosineSimilarity(double[] vec1, double[] vec2) {
+        if (vec1.length != vec2.length) {
+            throw new IllegalArgumentException("Vector lengths must match.");
+        }
+        double dot = 0.0, normA = 0.0, normB = 0.0;
+        for (int i = 0; i < vec1.length; i++) {
+            dot += vec1[i] * vec2[i];
+            normA += vec1[i] * vec1[i];
+            normB += vec2[i] * vec2[i];
+        }
+        return (normA == 0 || normB == 0) ? 0.0 : dot / (Math.sqrt(normA) * Math.sqrt(normB));
+    }
 }
