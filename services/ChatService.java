@@ -87,6 +87,9 @@ public class ChatService {
                 .distinct()
                 .collect(Collectors.toList());
 
+        if (sentences.isEmpty()) {
+            throw new AnswerNotFoundException("No informative content found in the document.");
+        }
 
 
         // Handle definition-style questions
@@ -110,4 +113,5 @@ public class ChatService {
                 }
             }
         }
+
 }
