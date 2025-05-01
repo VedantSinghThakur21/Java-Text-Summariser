@@ -61,4 +61,13 @@ public class ChatService {
                 || question.startsWith("explain") || question.contains("definition of")
                 || question.startsWith("tell me about") || question.contains("meaning of");
     }
+
+    private String extractMainKeyword(String question) {
+        String[] stopWords = {"what", "is", "define", "the", "a", "an", "of", "about", "explain", "tell", "me", "meaning"};
+        List<String> words = Arrays.asList(question.toLowerCase().split("\\s+"));
+        return words.stream()
+                .filter(word -> !Arrays.asList(stopWords).contains(word))
+                .findFirst()
+                .orElse(words.get(words.size() - 1));
+    }
 }
