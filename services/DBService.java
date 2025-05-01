@@ -63,4 +63,17 @@ public class DBService {
             System.out.println("❌ DB PDF Save Error: " + e.getMessage());
         }
     }
+
+    public String getLastPDFContent() {
+        String query = "SELECT content FROM pdf_documents ORDER BY id DESC LIMIT 1";
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            if (rs.next()) {
+                return rs.getString("content"); // Return latest PDF content
+            }
+        } catch (SQLException e) {
+            System.out.println("❌ DB PDF Load Error: " + e.getMessage());
+        }
+        return ""; // Return empty string if no PDF found
+    }
 }
