@@ -114,4 +114,25 @@ public class ChatService {
             }
         }
 
+        // Cosine similarity-based matching
+        List<Map<String, Integer>> sentenceTFs = sentences.stream()
+                .map(this::tokenize)
+                .map(this::getTermFrequency)
+                .collect(Collectors.toList());
+
+        Map<String, Integer> questionTF = getTermFrequency(tokenize(question));
+        Set<String> vocabulary = buildVocabulary(sentenceTFs);
+        vocabulary.addAll(questionTF.keySet());
+
+        double[] questionVector = buildTFVector(questionTF, vocabulary);
+
+        Map<String, Double> scoredAnswers = new LinkedHashMap<>();
+        for (int i = 0; i < sentences.size(); i++) {
+            double[] sentenceVector = buildTFVector(sentenceTFs.get(i), vocabulary);
+            double score = cosineSimilarity(questionVector, sentenceVector);
+            if (score > 0.15) {
+                scoredAnswers.put(sentences.get(i), score);
+            }
+        }
+
 }
