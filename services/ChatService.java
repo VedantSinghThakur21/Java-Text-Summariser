@@ -70,4 +70,41 @@ public class ChatService {
                 .findFirst()
                 .orElse(words.get(words.size() - 1));
     }
+
+    public String getAnswer(String question, String pdfText) throws AnswerNotFoundException {
+
+
+        // Clean and normalize PDF text
+        pdfText = pdfText.replaceAll("[\\r\\n]+", "\n").replaceAll("\u2022\\s*", "").trim();
+
+        List<String> sentences = Arrays.stream(pdfText.split("(?<=[.!?])\\s+"))
+                .map(String::trim)
+                .filter(s -> s.length() > 40 && s.split("\\s+").length >= 6)
+                .filter(s -> !s.matches("^[A-Z][a-zA-Z0-9\\s]{0,25}$"))
+                .distinct()
+                .collect(Collectors.toList());
+
+
+
+        // Handle definition-style questions
+        if (isDefinitionQuestion(question)) {
+            String keyword = extractMainKeyword(question);
+            Pattern defPattern = Pattern.compile(
+                    "(?i)(?:(?:the|a|an)\\s+)?\\b" + Pattern.quote(keyword) +
+                            "\\b\\s+(is|refers to|means|can be defined as)[^.]{10,}?\\.",
+                    Pattern.CASE_INSENSITIVE);
+
+            for (String sentence : sentences) {
+                Matcher matcher = defPattern.matcher(sentence);
+                if (matcher.find()) {
+                    return "Here’s what I found:\n\n" + matcher.group().trim();
+                }
+            }
+
+            for (String sentence : sentences) {
+                if (sentence.toLowerCase().contains(keyword.toLowerCase())) {
+                    return "Here’s what I found:\n\n" + sentence;
+                }
+            }
+        }
 }
