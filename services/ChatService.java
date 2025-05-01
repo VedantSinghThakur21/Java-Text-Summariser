@@ -73,6 +73,9 @@ public class ChatService {
 
     public String getAnswer(String question, String pdfText) throws AnswerNotFoundException {
 
+        if (question == null || pdfText == null) {
+            throw new IllegalArgumentException("Question and PDF content must not be null.");
+        }
 
         // Clean and normalize PDF text
         pdfText = pdfText.replaceAll("[\\r\\n]+", "\n").replaceAll("\u2022\\s*", "").trim();
