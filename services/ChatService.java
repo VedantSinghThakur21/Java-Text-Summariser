@@ -135,4 +135,19 @@ public class ChatService {
             }
         }
 
+        if (scoredAnswers.isEmpty()) {
+            throw new AnswerNotFoundException("No relevant answer found for your question.");
+        }
+
+        List<String> topSentences = scoredAnswers.entrySet().stream()
+                .sorted(Map.Entry.<String, Double>comparingByValue().reversed())
+                .limit(4)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+
+        StringBuilder formatted = new StringBuilder("Here’s what I found:\n\n");
+        topSentences.forEach(s -> formatted.append(s).append(" "));
+        return formatted.toString().trim();
+    }
+
 }
