@@ -17,4 +17,12 @@ public class ChatService {
                 .collect(Collectors.toList());
     }
 
+    private Map<String, Integer> getTermFrequency(List<String> words) {
+        Map<String, Integer> freqMap = new HashMap<>();
+        for (String word : words) {
+            freqMap.put(word, freqMap.getOrDefault(word, 0) + 1);
+        }
+        return freqMap;
+    }
+
 }
