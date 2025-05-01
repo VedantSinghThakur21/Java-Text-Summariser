@@ -52,4 +52,15 @@ public class DBService {
         }
         return null; // Return null if no answer found
     }
+
+    public void savePDFContent(String fileName, String content) {
+        String query = "INSERT INTO pdf_documents (file_name, content) VALUES (?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, fileName); // Store file name
+            stmt.setString(2, content); // Store PDF content
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("❌ DB PDF Save Error: " + e.getMessage());
+        }
+    }
 }
