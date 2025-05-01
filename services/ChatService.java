@@ -54,4 +54,11 @@ public class ChatService {
         }
         return (normA == 0 || normB == 0) ? 0.0 : dot / (Math.sqrt(normA) * Math.sqrt(normB));
     }
+
+    private boolean isDefinitionQuestion(String question) {
+        question = question.toLowerCase();
+        return question.startsWith("what is") || question.startsWith("define")
+                || question.startsWith("explain") || question.contains("definition of")
+                || question.startsWith("tell me about") || question.contains("meaning of");
+    }
 }
