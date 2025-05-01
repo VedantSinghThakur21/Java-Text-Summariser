@@ -76,4 +76,24 @@ public class DBService {
         }
         return ""; // Return empty string if no PDF found
     }
+
+    public void viewHistory() {
+        String query = "SELECT * FROM chat_history ORDER BY id";
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            System.out.println("\n📜 Chat History:");
+            int count = 1;
+            while (rs.next()) { // Iterate through chat history
+                System.out.println("🔸 Q" + count + ": " + rs.getString("question"));
+                System.out.println("   🟢 A" + count + ": " + rs.getString("answer"));
+                System.out.println("--------------------------------------------------");
+                count++;
+            }
+            if (count == 1) {
+                System.out.println("⚠️ No chat history found.");
+            }
+        } catch (SQLException e) {
+            System.out.println("❌ Error loading chat history: " + e.getMessage());
+        }
+    }
 }
