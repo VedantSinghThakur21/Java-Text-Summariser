@@ -27,4 +27,15 @@ public class DBService {
             System.out.println("❌ DB Insert/Update Error (chat_history): " + e.getMessage()); // Handle errors
         }
     }
+
+    public void saveQAPair(String question, String answer) {
+        String query = "INSERT INTO qa_pairs (question, answer) VALUES (?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, question.trim());
+            stmt.setString(2, answer.trim());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("❌ DB Insert Error (qa_pairs): " + e.getMessage());
+        }
+    }
 }
