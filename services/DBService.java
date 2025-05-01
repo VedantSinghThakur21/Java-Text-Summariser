@@ -96,4 +96,14 @@ public class DBService {
             System.out.println("❌ Error loading chat history: " + e.getMessage());
         }
     }
+
+    public void deleteHistory() {
+        String query = "DELETE FROM chat_history";
+        try (Statement stmt = connection.createStatement()) {
+            int rows = stmt.executeUpdate(query); // Execute delete operation
+            System.out.println("🗑️ Deleted " + rows + " record(s) from chat history.");
+        } catch (SQLException e) {
+            System.out.println("❌ Error deleting chat history: " + e.getMessage());
+        }
+    }
 }
