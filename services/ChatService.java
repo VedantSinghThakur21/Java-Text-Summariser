@@ -6,8 +6,13 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import exceptions.AnswerNotFoundException;
 
-
+/**
+ * ChatService is responsible for analyzing PDF content and answering
+ * user questions using cosine similarity and pattern-based extraction.
+ * Supports both regular and definition-style queries.
+ */
 public class ChatService {
+    // Tokenizes text into lowercase, filtered words
     private List<String> tokenize(String text) {
         if (text == null) throw new NullPointerException("Text cannot be null.");
         return Arrays.stream(text.toLowerCase()
@@ -17,6 +22,7 @@ public class ChatService {
                 .collect(Collectors.toList());
     }
 
+    // Computes term frequency of words in a document
     private Map<String, Integer> getTermFrequency(List<String> words) {
         Map<String, Integer> freqMap = new HashMap<>();
         for (String word : words) {
@@ -25,6 +31,7 @@ public class ChatService {
         return freqMap;
     }
 
+    // Builds a combined vocabulary from multiple documents
     private Set<String> buildVocabulary(List<Map<String, Integer>> docs) {
         Set<String> vocab = new HashSet<>();
         for (Map<String, Integer> doc : docs) {
@@ -33,6 +40,7 @@ public class ChatService {
         return vocab;
     }
 
+    // Converts term frequency map to vector
     private double[] buildTFVector(Map<String, Integer> tf, Set<String> vocab) {
         double[] vector = new double[vocab.size()];
         int i = 0;
@@ -42,6 +50,7 @@ public class ChatService {
         return vector;
     }
 
+    // Calculates cosine similarity between two vectors
     private double cosineSimilarity(double[] vec1, double[] vec2) {
         if (vec1.length != vec2.length) {
             throw new IllegalArgumentException("Vector lengths must match.");
@@ -55,6 +64,7 @@ public class ChatService {
         return (normA == 0 || normB == 0) ? 0.0 : dot / (Math.sqrt(normA) * Math.sqrt(normB));
     }
 
+    // Checks if the question is a definition-style question
     private boolean isDefinitionQuestion(String question) {
         question = question.toLowerCase();
         return question.startsWith("what is") || question.startsWith("define")
@@ -62,6 +72,7 @@ public class ChatService {
                 || question.startsWith("tell me about") || question.contains("meaning of");
     }
 
+    // Extracts the key term from a question
     private String extractMainKeyword(String question) {
         String[] stopWords = {"what", "is", "define", "the", "a", "an", "of", "about", "explain", "tell", "me", "meaning"};
         List<String> words = Arrays.asList(question.toLowerCase().split("\\s+"));
@@ -71,6 +82,10 @@ public class ChatService {
                 .orElse(words.get(words.size() - 1));
     }
 
+    /**
+     * Answers a question using the content extracted from a PDF.
+     * Supports definition-style and similarity-based answering.
+     */
     public String getAnswer(String question, String pdfText) throws AnswerNotFoundException {
 
         if (question == null || pdfText == null) {
