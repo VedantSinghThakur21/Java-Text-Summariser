@@ -38,4 +38,18 @@ public class DBService {
             System.out.println("❌ DB Insert Error (qa_pairs): " + e.getMessage());
         }
     }
+
+    public String getPreviousAnswer(String question) {
+        String query = "SELECT answer FROM chat_history WHERE question = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, question.trim()); // Set question parameter
+            ResultSet rs = stmt.executeQuery(); // Execute query
+            if (rs.next()) {
+                return rs.getString("answer"); // Return found answer
+            }
+        } catch (SQLException e) {
+            System.out.println("❌ DB Query Error: " + e.getMessage()); // Handle query error
+        }
+        return null; // Return null if no answer found
+    }
 }
