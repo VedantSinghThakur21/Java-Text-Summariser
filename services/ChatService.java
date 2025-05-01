@@ -33,4 +33,13 @@ public class ChatService {
         return vocab;
     }
 
+    private double[] buildTFVector(Map<String, Integer> tf, Set<String> vocab) {
+        double[] vector = new double[vocab.size()];
+        int i = 0;
+        for (String word : vocab) {
+            vector[i++] = tf.getOrDefault(word, 0);
+        }
+        return vector;
+    }
+
 }
