@@ -25,4 +25,12 @@ public class ChatService {
         return freqMap;
     }
 
+    private Set<String> buildVocabulary(List<Map<String, Integer>> docs) {
+        Set<String> vocab = new HashSet<>();
+        for (Map<String, Integer> doc : docs) {
+            vocab.addAll(doc.keySet());
+        }
+        return vocab;
+    }
+
 }
