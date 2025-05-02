@@ -130,4 +130,19 @@ public class UserInteractionService {
         String q = question.toLowerCase();
         return q.contains("summarize") || q.contains("summary");
     }
+
+    private void handleSummaryRequest(String question) {
+        int points = 5;
+        Matcher matcher = Pattern.compile("(\\d+)\\s*(points|bullets|lines)?").matcher(question);
+        if (matcher.find()) {
+            try {
+                points = Integer.parseInt(matcher.group(1));
+            } catch (NumberFormatException ignored) {}
+        }
+
+        List<String> summary = pdfService.summarizeText(cachedPDFContent, points);
+        System.out.println("\n📄 Summary in " + points + " points:");
+        summary.forEach(s -> System.out.println("• " + s));
+        dbService.saveQuestionAnswer(question, String.join(" ", summary));
+    }
 }
