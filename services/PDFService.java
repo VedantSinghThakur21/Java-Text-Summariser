@@ -55,6 +55,18 @@ public class PDFService {
                 .collect(Collectors.toList());
     }
 
+    private Map<String, Integer> calculateWordFrequencies(List<String> sentences) {
+        Map<String, Integer> freq = new HashMap<>();
+        for (String sentence : sentences) {
+            for (String word : sentence.toLowerCase().split("\\W+")) { // Normalize and split on non-word chars
+                if (word.length() > 2) { // Ignore very short words (e.g., 'an', 'to')
+                    freq.put(word, freq.getOrDefault(word, 0) + 1);
+                }
+            }
+        }
+        return freq;
+    }
+
 
 
 }
