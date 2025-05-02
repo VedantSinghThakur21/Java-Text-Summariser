@@ -54,6 +54,16 @@ public class PDFProcessor {
             }
         }
 
+        // Score each sentence
+        Map<String, Integer> sentenceScores = new HashMap<>();
+        for (String sentence : sentences) {
+            int score = 0;
+            for (String word : sentence.toLowerCase().split("\\W+")) {
+                score += wordFreq.getOrDefault(word, 0);
+            }
+            sentenceScores.put(sentence, score);
+        }
+
     }
 
 }
