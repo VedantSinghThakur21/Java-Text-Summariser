@@ -26,4 +26,26 @@ public class PDFProcessor {
         }
     }
 
+    public String getSummary() {
+        return getSummary(5);
+    }
+
+    // Generate smart summary of the PDF
+    public String getSummary(int numSentences) {
+        if (pdfText == null || pdfText.isEmpty()) {
+            return "No PDF content available to summarize.";
+        }
+
+        List<String> sentences = Arrays.stream(pdfText.split("(?<=[.!?])\\s+"))
+                .map(String::trim)
+                .filter(s -> s.length() > 30 && s.split(" ").length >= 5)
+                .distinct()
+                .collect(Collectors.toList());
+
+        if (sentences.size() < numSentences) {
+            return String.join(" ", sentences);
+        }
+
+    }
+
 }
