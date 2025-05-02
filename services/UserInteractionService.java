@@ -125,4 +125,9 @@ public class UserInteractionService {
         System.out.println("\n📄 Summary:");
         summary.forEach(s -> System.out.println("• " + s));
     }
+
+    private boolean isSummaryRequest(String question) {
+        String q = question.toLowerCase();
+        return q.contains("summarize") || q.contains("summary");
+    }
 }
