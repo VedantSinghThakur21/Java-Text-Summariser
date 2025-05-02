@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 public class PDFService {
     public void extractText(PDFDocument pdfDoc) throws InvalidPDFException, EmptyPDFException {
         try (PDDocument document = PDDocument.load(new File(pdfDoc.getFilePath()))) {
+
             if (document.isEncrypted()) {
                 throw new InvalidPDFException("Encrypted PDFs are not supported.");
             }
@@ -30,5 +31,25 @@ public class PDFService {
             throw new InvalidPDFException("Unable to process PDF: " + e.getMessage());
         }
     }
+
+    public List<String> summarizeText(String text, int maxPoints) {
+        // Break text into valid sentences
+        List<String> sentences = extractSentences(text);
+
+        // Compute word frequency across all sentences
+        Map<String, Integer> wordFrequencies = calculateWordFrequencies(sentences);
+
+        // Score each sentence based on word frequencies
+        Map<String, Integer> sentenceScores = scoreSentences(sentences, wordFrequencies);
+
+        // Return the top N scoring sentences as the summary
+        return sentenceScores.entrySet().stream()
+                .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+                .limit(maxPoints)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+    }
+
+
 
 }
