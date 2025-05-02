@@ -5,6 +5,7 @@ import java.sql.*;
 public class DBService {
     private Connection connection;
 
+
     public DBService() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver"); // Load MySQL JDBC driver
@@ -16,6 +17,7 @@ public class DBService {
         }
     }
 
+    //  Saves or updates chat interaction using 'ON DUPLICATE KEY UPDATE'
     public void saveQuestionAnswer(String question, String answer) {
         String query = "INSERT INTO chat_history (question, answer) VALUES (?, ?) " +
                 "ON DUPLICATE KEY UPDATE answer = VALUES(answer)"; // Updates answer if question exists
@@ -28,6 +30,7 @@ public class DBService {
         }
     }
 
+    //  Saves Q&A pair without updating (consider adding UNIQUE constraint)
     public void saveQAPair(String question, String answer) {
         String query = "INSERT INTO qa_pairs (question, answer) VALUES (?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -39,6 +42,7 @@ public class DBService {
         }
     }
 
+    //  Retrieves previous answer for a given question from chat history
     public String getPreviousAnswer(String question) {
         String query = "SELECT answer FROM chat_history WHERE question = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -53,6 +57,7 @@ public class DBService {
         return null; // Return null if no answer found
     }
 
+    //  Saves entire PDF content into the database
     public void savePDFContent(String fileName, String content) {
         String query = "INSERT INTO pdf_documents (file_name, content) VALUES (?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -64,6 +69,7 @@ public class DBService {
         }
     }
 
+    //  Loads the most recent PDF content
     public String getLastPDFContent() {
         String query = "SELECT content FROM pdf_documents ORDER BY id DESC LIMIT 1";
         try (Statement stmt = connection.createStatement();
@@ -77,6 +83,7 @@ public class DBService {
         return ""; // Return empty string if no PDF found
     }
 
+    //  Displays formatted chat history
     public void viewHistory() {
         String query = "SELECT * FROM chat_history ORDER BY id";
         try (Statement stmt = connection.createStatement();
@@ -97,6 +104,7 @@ public class DBService {
         }
     }
 
+    //  Deletes all chat history from the database
     public void deleteHistory() {
         String query = "DELETE FROM chat_history";
         try (Statement stmt = connection.createStatement()) {
