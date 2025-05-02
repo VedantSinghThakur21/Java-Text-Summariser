@@ -72,4 +72,8 @@ public class PDFProcessor {
 
     }
 
+    public String getPdfText() {
+        return pdfText;
+    }
+
 }
