@@ -33,16 +33,15 @@ public class PDFService {
     }
 
     public List<String> summarizeText(String text, int maxPoints) {
-        // Break text into valid sentences
+
         List<String> sentences = extractSentences(text);
 
-        // Compute word frequency across all sentences
+
         Map<String, Integer> wordFrequencies = calculateWordFrequencies(sentences);
 
-        // Score each sentence based on word frequencies
+
         Map<String, Integer> sentenceScores = scoreSentences(sentences, wordFrequencies);
 
-        // Return the top N scoring sentences as the summary
         return sentenceScores.entrySet().stream()
                 .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
                 .limit(maxPoints)
