@@ -64,6 +64,12 @@ public class PDFProcessor {
             sentenceScores.put(sentence, score);
         }
 
+        return sentenceScores.entrySet().stream()
+                .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+                .limit(numSentences)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.joining(" "));
+
     }
 
 }
