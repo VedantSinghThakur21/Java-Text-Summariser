@@ -54,4 +54,20 @@ public class UserInteractionService {
 
         scanner.close();
     }
+
+    private void handlePDFUpload() {
+        System.out.print("Enter PDF file path: ");
+        String path = scanner.nextLine();
+        currentDoc.setFilePath(path);
+
+        try {
+            processor.readPDF(path);
+            cachedPDFContent = processor.getPdfText();
+            currentDoc.setContent(cachedPDFContent);
+            dbService.savePDFContent(new File(path).getName(), cachedPDFContent);
+            System.out.println("✅ PDF loaded successfully.");
+        } catch (Exception e) {
+            System.out.println("❌ Error: " + e.getMessage());
+        }
+    }
 }
