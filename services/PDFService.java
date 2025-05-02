@@ -36,7 +36,6 @@ public class PDFService {
 
         List<String> sentences = extractSentences(text);
 
-
         Map<String, Integer> wordFrequencies = calculateWordFrequencies(sentences);
 
 
@@ -46,6 +45,13 @@ public class PDFService {
                 .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
                 .limit(maxPoints)
                 .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+    }
+    private List<String> extractSentences(String text) {
+        return Arrays.stream(text.split("(?<=[.!?])\\s+")) // Split on sentence endings
+                .map(String::trim)
+                .filter(s -> s.length() > 30 && s.split("\\s+").length >= 5) // Basic filter to skip trivial sentences
+                .distinct() // Remove duplicate sentences
                 .collect(Collectors.toList());
     }
 
