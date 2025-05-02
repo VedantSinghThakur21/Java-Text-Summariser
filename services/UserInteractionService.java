@@ -70,4 +70,37 @@ public class UserInteractionService {
             System.out.println("❌ Error: " + e.getMessage());
         }
     }
+
+    private void handleQuestion() {
+        if (cachedPDFContent == null || cachedPDFContent.isEmpty()) {
+            System.out.println("⚠️ Please upload a PDF first.");
+            return;
+        }
+
+        System.out.print("Ask a question: ");
+        String question = scanner.nextLine();
+
+        if (question.trim().isEmpty()) {
+            System.out.println("⚠️ Please ask something meaningful.");
+            return;
+        }
+
+        if (isSummaryRequest(question)) {
+            handleSummaryRequest(question);
+            return;
+        }
+
+        try {
+            String answer = dbService.getPreviousAnswer(question);
+            if (answer == null || answer.isEmpty()) {
+                answer = chatService.getAnswer(question, cachedPDFContent);
+                dbService.saveQuestionAnswer(question, answer);
+            }
+            System.out.println("\nAnswer:\n" + answer);
+        } catch (AnswerNotFoundException e) {
+            System.out.println("🤖 Sorry, I couldn’t find a relevant answer.");
+        } catch (Exception e) {
+            System.out.println("❌ Error generating answer: " + e.getMessage());
+        }
+    }
 }
