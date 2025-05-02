@@ -103,4 +103,26 @@ public class UserInteractionService {
             System.out.println("❌ Error generating answer: " + e.getMessage());
         }
     }
+
+    private void handleSummary() {
+        if (cachedPDFContent == null || cachedPDFContent.isEmpty()) {
+            System.out.println("⚠️ Please upload a PDF first.");
+            return;
+        }
+
+        System.out.print("How many summary points? (default 5): ");
+        String input = scanner.nextLine().trim();
+        int points = 5;
+        try {
+            if (!input.isEmpty()) {
+                points = Integer.parseInt(input);
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("⚠️ Invalid number. Using default 5.");
+        }
+
+        List<String> summary = pdfService.summarizeText(cachedPDFContent, points);
+        System.out.println("\n📄 Summary:");
+        summary.forEach(s -> System.out.println("• " + s));
+    }
 }
