@@ -46,6 +46,14 @@ public class PDFProcessor {
             return String.join(" ", sentences);
         }
 
+        // Word frequency map
+        Map<String, Integer> wordFreq = new HashMap<>();
+        for (String word : pdfText.toLowerCase().split("\\W+")) {
+            if (word.length() > 2) {
+                wordFreq.put(word, wordFreq.getOrDefault(word, 0) + 1);
+            }
+        }
+
     }
 
 }
