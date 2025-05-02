@@ -67,6 +67,18 @@ public class PDFService {
         return freq;
     }
 
+    private Map<String, Integer> scoreSentences(List<String> sentences, Map<String, Integer> wordFreq) {
+        Map<String, Integer> scores = new HashMap<>();
+        for (String sentence : sentences) {
+            int score = Arrays.stream(sentence.toLowerCase().split("\\W+"))
+                    .filter(w -> w.length() > 2)
+                    .mapToInt(w -> wordFreq.getOrDefault(w, 0)) // Sum up word frequency values
+                    .sum();
+            scores.put(sentence, score);
+        }
+        return scores;
+    }
+
 
 
 }
