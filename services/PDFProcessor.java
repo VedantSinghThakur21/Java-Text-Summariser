@@ -12,7 +12,7 @@ public class PDFProcessor {
     private String pdfText;
     private String fileName;
 
-
+    // Load PDF and extract text content
     public void readPDF(String filePath) throws IOException {
         File file = new File(filePath);
         this.fileName = file.getName();
@@ -26,6 +26,7 @@ public class PDFProcessor {
         }
     }
 
+    // Return default summary (5 key sentences)
     public String getSummary() {
         return getSummary(5);
     }
@@ -72,10 +73,12 @@ public class PDFProcessor {
 
     }
 
+    // Get raw text content
     public String getPdfText() {
         return pdfText;
     }
 
+    // Get the name of the loaded PDF file
     public String getFileName() {
         return fileName;
     }
