@@ -9,6 +9,6 @@ public class PDFDocument {
         this.fileName = fileName;
         this.content = content;
     }
-    public String getFileName() {   
-        return fileName;    
-    }   
+    public String getFileName() {
+        return fileName;
+    }
