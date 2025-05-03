@@ -23,7 +23,11 @@ public class PDFDocument {
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }
-    
+
     public void setFilePath(String filePath) {
         this.fileName = filePath; 
     }
+    public void setContent(String content) {
+        this.content = content;
+    }
+}
