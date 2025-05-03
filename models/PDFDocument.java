@@ -15,3 +15,7 @@ public class PDFDocument {
     public String getFilePath() {
         return fileName; 
     }
+
+    public String getContent() {
+        return content;
+    }
