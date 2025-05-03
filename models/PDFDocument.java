@@ -12,3 +12,6 @@ public class PDFDocument {
     public String getFileName() {
         return fileName;
     }
+    public String getFilePath() {
+        return fileName; 
+    }
