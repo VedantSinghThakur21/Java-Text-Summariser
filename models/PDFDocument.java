@@ -5,3 +5,7 @@ public class PDFDocument {
     private String content;
 
     public PDFDocument() {}
+    public PDFDocument(String fileName, String content) {
+        this.fileName = fileName;
+        this.content = content;
+    }
