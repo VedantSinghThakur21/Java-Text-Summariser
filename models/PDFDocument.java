@@ -19,3 +19,7 @@ public class PDFDocument {
     public String getContent() {
         return content;
     }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
