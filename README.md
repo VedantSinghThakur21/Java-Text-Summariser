@@ -25,6 +25,20 @@ SmartPDFChatBot is a Java-based NLP chatbot that allows users to upload a PDF fi
 
 ---
 
+## 📦 Requirements (JAR Dependencies)
+
+```
+# PDF Processing Library
+pdfbox-app-2.0.27.jar
+
+# MySQL JDBC Connector
+mysql-connector-j-8.3.0.jar
+
+# (Optional) HTTP Client Libraries for API integration (e.g., OkHttp, Apache HttpClient)
+```
+
+---
+
 ## 🧩 Modules
 
 ### 1. **PDF Processing**
