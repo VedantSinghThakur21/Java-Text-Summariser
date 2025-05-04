@@ -144,6 +144,13 @@ SmartPDFChatBot/
 
 ---
 
+## 🧪 Sample Output
+![image](https://github.com/user-attachments/assets/a4b58a75-f6a3-4a01-b6ec-dc651157d1cc)
+![image](https://github.com/user-attachments/assets/b01df842-cdf4-4cb0-9783-e44f2889ea36)
+
+
+---
+
 ## 🧑‍💻 Contributors
 
 * **Vedant Singh Thakur**
